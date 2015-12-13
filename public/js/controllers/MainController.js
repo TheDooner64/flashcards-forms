@@ -16,10 +16,15 @@ app.controller('MainController', function (FlashCardsFactory, $scope) {
     $scope.getCategoryCards = function (theCategory) {
         $scope.currentCategory = theCategory;
         $scope.loading = true;
-        FlashCardsFactory.getFlashCardsByCategory(theCategory).then(function (cards) {
-            $scope.flashCards = cards;
-            $scope.loading = false;
-        });
+
+        if (theCategory === null) {
+            $scope.getAllCards();
+        } else {
+            FlashCardsFactory.getFlashCardsByCategory(theCategory).then(function (cards) {
+                $scope.flashCards = cards;
+                $scope.loading = false;
+            });
+        }
     };
 
     $scope.getAllCards = function () {

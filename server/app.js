@@ -8,6 +8,10 @@ var indexHtmlPath = path.join(__dirname, '../index.html');
 
 var FlashCardModel = require('./models/flash-card-model');
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(express.static(publicPath));
 
 app.get('/', function (req, res) {
@@ -28,4 +32,12 @@ app.get('/cards', function (req, res) {
         }, Math.random() * 1000);
     });
 
+});
+
+app.post('/cards', function(req, res, next) {
+    FlashCardModel.create(req.body)
+    .then(function(newCard) {
+        console.log(newCard);
+        res.send(newCard);
+    }).then(null, next);
 });
